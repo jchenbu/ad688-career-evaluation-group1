@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Career Evaluation Product — Group 1 – AD688 Career Evaluation Product</title>
+<title>Data Preparation – AD688 Career Evaluation Product</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,7 +26,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -96,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -104,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Project Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data_cleaning.html"> 
+    <a class="nav-link active" href="./data_cleaning.html" aria-current="page"> 
 <span class="menu-text">Data Preparation</span></a>
   </li>  
   <li class="nav-item">
@@ -143,13 +162,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#project-scope" id="toc-project-scope" class="nav-link active" data-scroll-target="#project-scope">Project Scope</a></li>
-  <li><a href="#product-question" id="toc-product-question" class="nav-link" data-scroll-target="#product-question">Product Question</a></li>
-  <li><a href="#why-this-industry" id="toc-why-this-industry" class="nav-link" data-scroll-target="#why-this-industry">Why This Industry</a></li>
-  <li><a href="#scope-revision" id="toc-scope-revision" class="nav-link" data-scroll-target="#scope-revision">Scope Revision</a></li>
-  <li><a href="#how-to-read-this-site" id="toc-how-to-read-this-site" class="nav-link" data-scroll-target="#how-to-read-this-site">How To Read This Site</a></li>
-  <li><a href="#team" id="toc-team" class="nav-link" data-scroll-target="#team">Team</a></li>
-  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap">Roadmap</a></li>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#data-source" id="toc-data-source" class="nav-link" data-scroll-target="#data-source">Data Source</a></li>
+  <li><a href="#industry-and-career-scope" id="toc-industry-and-career-scope" class="nav-link" data-scroll-target="#industry-and-career-scope">Industry and Career Scope</a>
+  <ul class="collapse">
+  <li><a href="#why-this-industry-and-why-a-three-digit-code" id="toc-why-this-industry-and-why-a-three-digit-code" class="nav-link" data-scroll-target="#why-this-industry-and-why-a-three-digit-code">Why this industry, and why a three-digit code</a></li>
+  </ul></li>
+  <li><a href="#role-definition" id="toc-role-definition" class="nav-link" data-scroll-target="#role-definition">Role Definition</a></li>
+  <li><a href="#filter-funnel" id="toc-filter-funnel" class="nav-link" data-scroll-target="#filter-funnel">Filter Funnel</a></li>
+  <li><a href="#cleaning-decisions" id="toc-cleaning-decisions" class="nav-link" data-scroll-target="#cleaning-decisions">Cleaning Decisions</a>
+  <ul class="collapse">
+  <li><a href="#field-normalization" id="toc-field-normalization" class="nav-link" data-scroll-target="#field-normalization">Field Normalization</a></li>
+  </ul></li>
+  <li><a href="#data-quality-and-limitations" id="toc-data-quality-and-limitations" class="nav-link" data-scroll-target="#data-quality-and-limitations">Data Quality and Limitations</a></li>
+  <li><a href="#output" id="toc-output" class="nav-link" data-scroll-target="#output">Output</a></li>
+  <li><a href="#reproducing-this-step" id="toc-reproducing-this-step" class="nav-link" data-scroll-target="#reproducing-this-step">Reproducing This Step</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -158,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Career Evaluation Product — Group 1</h1>
+<h1 class="title">Data Preparation</h1>
 </div>
 
 
@@ -175,8 +203,85 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="project-scope" class="level2">
-<h2 class="anchored" data-anchor-id="project-scope">Project Scope</h2>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>Every figure on the analysis pages comes from one table. This page documents how that table was built: what was pulled, what was kept, what was removed, and what was repaired. Anyone reading the conclusions should be able to judge how much weight the evidence can carry.</p>
+</section>
+<section id="data-source" class="level2">
+<h2 class="anchored" data-anchor-id="data-source">Data Source</h2>
+<p>The panel is built from the <strong>WRDS jobs_2026 dataset</strong> supplied for Module 3: <strong>504,208 postings across 134 columns</strong>, distributed as twenty-one Parquet parts with a manifest, per-column coverage report and checksums.</p>
+<p>Modules 1 and 2 used the MET Employability Career Match API. The analysis moved to the supplied dataset in Module 3 and measured the two sources against each other on the exact scope before moving forward:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>MET API panel</th>
+<th>Module 3, as supplied</th>
+<th>Module 3, after cleaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Postings in scope</td>
+<td>6,199</td>
+<td>7,074</td>
+<td><strong>7,074</strong></td>
+</tr>
+<tr class="even">
+<td>Skills listed</td>
+<td>93%</td>
+<td>100%</td>
+<td><strong>100%</strong></td>
+</tr>
+<tr class="odd">
+<td>US state recorded</td>
+<td>28%</td>
+<td>92%</td>
+<td><strong>73%</strong></td>
+</tr>
+<tr class="even">
+<td>Minimum education level</td>
+<td>59%, parsed from text</td>
+<td>69%</td>
+<td><strong>69%, a coded field</strong></td>
+</tr>
+<tr class="odd">
+<td>Work arrangement recorded</td>
+<td>48%</td>
+<td>65%</td>
+<td><strong>44%</strong></td>
+</tr>
+<tr class="even">
+<td>Annual salary usable</td>
+<td>19%</td>
+<td>25%</td>
+<td><strong>25%</strong></td>
+</tr>
+<tr class="odd">
+<td>Years of experience</td>
+<td>66%, parsed from text</td>
+<td>56%</td>
+<td><strong>24%, a numeric field</strong></td>
+</tr>
+<tr class="even">
+<td>Occupation code (SOC)</td>
+<td>98%</td>
+<td>33%</td>
+<td><strong>33%, and unreliable</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The third and fourth columns differ because several supplied fields encode missing data as a value rather than as a blank. Those cases are set out under Field Normalization below.</p>
+<p>The switch is not an improvement on every axis. Occupational coding is substantially sparser and, as found upon inspection, unreliable where it is present. Experience is recorded on fewer postings once placeholder values are removed, though what remains is a number rather than a figure that is extracted with a regular expression. Geography was the single largest limitation of the earlier panel and it improves by a factor of two and a half even after cleaning, the skill fields arrive split into named tools, specialisations, transferable skills and certifications, and education and experience stop being the team’s estimates and become the provider’s.</p>
+</section>
+<section id="industry-and-career-scope" class="level2">
+<h2 class="anchored" data-anchor-id="industry-and-career-scope">Industry and Career Scope</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -184,161 +289,232 @@ ul.task-list li input[type="checkbox"] {
 </colgroup>
 <tbody>
 <tr class="odd">
-<td><strong>Team</strong></td>
-<td>AD688 Group 1</td>
+<td>Industry code</td>
+<td>NAICS 2022 — <strong>523</strong>, Securities, Commodity Contracts, and Other Financial Investments and Related Activities</td>
 </tr>
 <tr class="even">
-<td><strong>Career Pathway</strong></td>
+<td>Career pathway</td>
 <td>Business Intelligence / Data Analyst</td>
 </tr>
 <tr class="odd">
-<td><strong>Industry Code</strong></td>
-<td>NAICS 2022 — <strong>523</strong> Securities, Commodity Contracts, and Other Financial Investments and Related Activities</td>
+<td>Date window</td>
+<td>Postings published on or after <strong>1 September 2025</strong></td>
 </tr>
 <tr class="even">
-<td><strong>Industry Label</strong></td>
-<td>U.S. securities, investment and asset management</td>
-</tr>
-<tr class="odd">
-<td><strong>Data Source</strong></td>
-<td>WRDS <code>jobs_2026</code> dataset (Module 3); MET Career Match API (Modules 1-2)</td>
+<td>Build date</td>
+<td>4 October 2026</td>
 </tr>
 </tbody>
 </table>
+<p>The date window keeps the analysis current: the source spans postings back to 2014, and hiring requirements from a decade ago describe a market the target user is not applying into. In practice the window costs little — only 192 in-scope postings predate it.</p>
+<section id="why-this-industry-and-why-a-three-digit-code" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-industry-and-why-a-three-digit-code">Why this industry, and why a three-digit code</h3>
+<p>Module 1 anchored the project to NAICS 5221, Depository Credit Intermediation. That code returned 59 postings in total, too few to support compensation or skill-gap analysis, and lead to the analysis being re-anchored to NAICS 523 after measuring the neighbouring codes. NAICS 523 accounts for roughly two-thirds of all analytics postings within Finance and Insurance, so it is where the market actually is.</p>
+<p>The assignment asks for four- or six-digit codes where possible. The earlier source carried no four-digit granularity beneath 523; this dataset does expose NAICS4 through NAICS6, and those columns are retained in the panel for finer analysis, but 523 remains the scope boundary so that the project stays comparable across modules.</p>
 </section>
-<section id="product-question" class="level2">
-<h2 class="anchored" data-anchor-id="product-question">Product Question</h2>
-<blockquote class="blockquote">
-<p>Which skills, locations, and role variants give an early-career candidate the strongest entry into Business Intelligence / Data Analyst roles at U.S. securities and investment firms (NAICS 523), and which skills are missing from a current student profile?</p>
-</blockquote>
 </section>
-<section id="why-this-industry" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-industry">Why This Industry</h2>
-<p>Securities, commodity contracts, and other financial investment activities (NAICS 523) run continuous reporting, risk, performance-attribution, and client-analytics functions that are staffed by business intelligence and data analyst roles rather than by research scientists. Because investment analytics is shaped by regulatory reporting and legacy data infrastructure, its skill profile differs from the software sector — SQL, data governance, and domain knowledge often matter as much as machine-learning depth. The subsector is also the single largest source of analytics postings within Finance and Insurance in the data source, which makes the scope both coherent and large enough to support a decision-oriented product.</p>
+<section id="role-definition" class="level2">
+<h2 class="anchored" data-anchor-id="role-definition">Role Definition</h2>
+<p>The assignment allows title keywords, SOC or O*NET mappings, skills logic, or a combination, provided the choice is explained. For this analysis, the team uses a <strong>combination</strong>, and this dataset makes the case stronger than before: occupation codes are present on only a third of postings, so an occupation-only filter would discard two postings in three unseen.</p>
+<p>A posting is kept when <strong>either</strong> condition holds:</p>
+<ul>
+<li>its SOC occupation matches one of: data scientist, database architect, statistician, mathematician, operations research, market research analyst, financial and investment analyst, credit analyst, management analyst</li>
+<li><strong>or</strong> its title contains one of: analyst, analytics, data, business intelligence, BI, reporting, SQL, data science, machine learning</li>
+</ul>
+<p>Information-security roles are then removed. They match the word “analyst” but belong to a different career pathway, and including them would distort the skill profile the product reports.</p>
 </section>
-<section id="scope-revision" class="level2">
-<h2 class="anchored" data-anchor-id="scope-revision">Scope Revision</h2>
-<p>Module 1 anchored the project to NAICS 5221, Depository Credit Intermediation. When pulled in Module 2, the data returned <strong>59 postings in total</strong>, of which 13 carried salary information — too thin to support the planned skill-gap and compensation analysis later in the project. Because of that the team measured the neighbouring industry codes and moved the anchor to <strong>NAICS 523</strong>, which keeps the project inside Finance and Insurance while providing <strong>15,176 postings</strong>, of which <strong>6,199</strong> matched our career pathway. Module 3 rebuilt the panel from the supplied WRDS dataset on the same scope: <strong>24,914 postings</strong> in NAICS 523 and <strong>7,074</strong> after the role filter. The measurement and the filter rule are documented on the Data Preparation page.</p>
+<section id="filter-funnel" class="level2">
+<h2 class="anchored" data-anchor-id="filter-funnel">Filter Funnel</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Postings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Source dataset</td>
+<td>504,208</td>
+</tr>
+<tr class="even">
+<td>In NAICS 523</td>
+<td>24,914</td>
+</tr>
+<tr class="odd">
+<td>Matched the role definition</td>
+<td>8,747</td>
+</tr>
+<tr class="even">
+<td>Removed: information-security roles</td>
+<td>−76</td>
+</tr>
+<tr class="odd">
+<td>Removed: no publication date</td>
+<td>−1,405</td>
+</tr>
+<tr class="even">
+<td>Removed: published before 1 September 2025</td>
+<td>−192</td>
+</tr>
+<tr class="odd">
+<td>Removed: duplicate identifiers</td>
+<td>−0</td>
+</tr>
+<tr class="even">
+<td>Removed: missing an essential field</td>
+<td>−0</td>
+</tr>
+<tr class="odd">
+<td><strong>Analytical panel</strong></td>
+<td><strong>7,074</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Postings without a publication date are the largest single exclusion. They cannot be placed inside the date window, and keeping them would mean reporting a twelve-month market using rows of unknown age.</p>
 </section>
-<section id="how-to-read-this-site" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-read-this-site">How To Read This Site</h2>
+<section id="cleaning-decisions" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-decisions">Cleaning Decisions</h2>
+<p>Cleaning stays conservative. Where a value is implausible a blank is inserted into that field rather than an assumed a replacement, and where a whole posting is questionable it is recorded as a gap. Deleting rows narrows the sample; blanking one field costs only that field.</p>
+<p>The rules below were written for Module 2 by Katie Bowles and carried over unchanged; only the column names differ, and the salary handling is extended because this dataset quotes pay in several periods.</p>
+<p><strong>Duplicates.</strong> Deduplicated on the posting identifier. None remained.</p>
+<p><strong>Rows missing essentials.</strong> A posting is dropped if it has no identifier, title, employer or publication date. After the date filter, none failed this test.</p>
+<p><strong>Dates.</strong> Parsed to a single format. Where an expiry date preceded the publication date the expiry would be blanked, since one of the two must be wrong and it cannot be determined which is incorrect; no postings were affected.</p>
+<p><strong>Salary.</strong> The provider’s <code>SALARY</code> column turned out to be a free-text summary whose value is an empty placeholder on most rows, so it is kept for reference but never used as a figure. The usable numbers are the structured range, and that range is quoted in different periods — 1,751 annual, 315 hourly, 18 monthly. Each is validated against bounds appropriate to its own period rather than a single annual rule, which had been silently deleting hourly rates as “implausible”. Reversed ranges are swapped, zeros treated as missing, and 20 rows were cleared as out of range across all periods.</p>
+<p>Hourly and monthly rates are kept in their own columns and <strong>are not converted to annual figures</strong>, because the conversion requires an assumption about hours worked that the postings do not supply. <code>ANNUAL_SALARY_MID</code> — the midpoint of the annual range — is the field used for salary analysis, and it is populated on 1,741 postings.</p>
+<p><strong>Experience and education.</strong> Taken directly from the provider’s coded fields. Unlike the earlier panel these are not team estimates, so no parsing decisions were needed.</p>
+<p><strong>Skills.</strong> Arrive as arrays and are stored as JSON-style list strings — for example <code>["Microsoft Excel", "SQL (Programming Language)"]</code> — across four fields: all skills, named software, specialised skills and transferable skills, plus certifications. Names are not yet normalised, so casing and synonyms remain distinct; that normalisation belongs to the skill-gap work, where it has an analytical purpose. Code reading these fields must parse the list rather than splitting on a delimiter.</p>
+<p><strong>Remote status.</strong> Never inferred, and category labels are normalised because the source spells the same category two ways. A posting with no remote label is an absence of information, not evidence of an office requirement.</p>
+<p><strong>Location.</strong> Text fields trimmed of stray whitespace. This dataset carries no coordinates, so the latitude and longitude check from the earlier pipeline does not apply; geography is carried by state, city and metropolitan area.</p>
+<p><strong>Types.</strong> Every column is cast explicitly — dates, booleans, numbers and categories — so later analysis cannot silently treat a number as text.</p>
+<section id="field-normalization" class="level3">
+<h3 class="anchored" data-anchor-id="field-normalization">Field Normalization</h3>
+<p>Integration testing in Module 3 exposed four defects that coverage statistics alone do not reveal. Each repair is written to a separate column, so the provider’s original value stays auditable.</p>
+<p><strong>The job title is overwritten on part of the panel.</strong> On 2,165 postings — 31 percent — <code>TITLE_NAME</code> holds the occupation name instead of the advertised title, so a vacancy posted as “Sr Financial Analyst, AWS GTM Finance” reads simply as “Management Analysts”. Counting titles from that field produced an apparent leading title of “management analysts” with 1,991 postings, which is an artifact of the coding and not a fact about the market. <code>TITLE_CLEAN</code> is rebuilt from the raw title text instead, raising the number of distinct titles from 2,396 to 4,000.</p>
+<p><strong>Occupational coding is wrong on identifiable rows, not merely sparse.</strong> Several postings titled Senior Financial Analyst are coded as <strong>Models, Demonstrators, and Product Promoters</strong>. The field is kept and the defect reported rather than deleted, because it is the direct justification for defining roles by title as well as by code.</p>
+<p><strong>The state field is not only a state field.</strong> It mixes full names with two-letter codes, so New York appeared twice — as “New York” (514) and as “NY” (212) — and it carries 1,202 postings labelled “United States” and 178 labeled “Remote”, a country and a work arrangement. <code>STATE_CLEAN</code> expands the codes and discards the non-geographic values, which lowers real coverage from an apparent 92 percent to an honest <strong>73 percent</strong>.</p>
+<p><strong>Two fields encode “missing” as a value.</strong> <code>REMOTE_TYPE_NAME</code> carries a literal “Unknown” on 1,442 postings alongside 2,506 true nulls, and spells the office category both “Onsite” and “On-site”; <code>REMOTE_CLEAN</code> merges the spellings and treats “Unknown” as missing, leaving 44 percent labelled. <code>MIN_YEARS_EXPERIENCE</code> reports zero years on 2,288 postings, but on 2,143 of them the stated maximum is exactly one — a fixed “0 to 1” band attached to postings titled Senior Financial Analyst, Finance Manager and Accounting Manager. That is a provider default, and left in place it produced a median requirement of zero years across the panel. <code>MIN_YEARS_EXP_CLEAN</code> removes the band, leaving 1,702 postings with a stated requirement and a median of three years.</p>
+<p>Several headline numbers fall as a result. That is the intended outcome: the higher figures counted placeholders as data.</p>
+<p>A fifth defect surfaced in Module 5, in the employer field. On 397 postings it holds an applicant-tracking hostname rather than a company name, on 229 it names a staffing agency or job aggregator rather than the hiring firm, and one employer appeared under three spellings. The provider’s own <code>COMPANY_IS_STAFFING</code> flag cannot be used to find these: it is set on 93 of 7,074 rows and contradicts itself, marking TD as staffing while giving JPMorgan Chase both values. <code>EMPLOYER_CLEAN</code>, <code>EMPLOYER_UNIDENTIFIED</code> and <code>IS_AGENCY</code> record the repair without dropping any rows, so employer concentration is measured on the 6,448 postings where a hiring firm can actually be identified.</p>
+</section>
+</section>
+<section id="data-quality-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-and-limitations">Data Quality and Limitations</h2>
+<p>Coverage in the panel of 7,074 postings:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Populated</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Skills</td>
+<td>7,074</td>
+<td>100%</td>
+</tr>
+<tr class="even">
+<td>Named software skills</td>
+<td>7,074</td>
+<td>100%</td>
+</tr>
+<tr class="odd">
+<td>US state, after normalization</td>
+<td>5,135</td>
+<td>73%</td>
+</tr>
+<tr class="even">
+<td>Minimum education level</td>
+<td>4,913</td>
+<td>69%</td>
+</tr>
+<tr class="odd">
+<td>Work arrangement, after normalization</td>
+<td>3,126</td>
+<td>44%</td>
+</tr>
+<tr class="even">
+<td>Occupation code (SOC 2021)</td>
+<td>2,357</td>
+<td>33%</td>
+</tr>
+<tr class="odd">
+<td>Annual salary usable</td>
+<td>1,741</td>
+<td>25%</td>
+</tr>
+<tr class="even">
+<td>Years of experience, after normalization</td>
+<td>1,702</td>
+<td>24%</td>
+</tr>
+</tbody>
+</table>
+<p>Four limitations shape how the analysis pages should be read.</p>
+<p><strong>Salary is disclosed on one posting in four.</strong> Employers who publish pay ranges are not a random sample — pay-transparency law applies in some states and not others — so the disclosed group likely skews toward those jurisdictions and toward larger employers. Every salary figure in this project describes that subset, not the market.</p>
+<p><strong>Occupation codes are sparse and partly wrong.</strong> Only a third of postings carry a SOC occupation, and within that third the classification misassigns senior finance roles badly enough to be caught by eye. Any breakdown by occupation describes the coded third, and comparisons between occupations are ratios within that subset rather than counts of the whole market.</p>
+<p><strong>Titles are dependable, classifications are not.</strong> Raw title text is present on every posting and is what is counted. Provider-normalised titles and occupation codes are used only where the analysis is explicitly about data quality.</p>
+<p><strong>Experience survives on one posting in four.</strong> The provider supplies a value more often than that, but most of the additional rows carry a placeholder band rather than a requirement. It is a reliable number where present, but absence is common and should not be read as “no experience required”.</p>
+<p>Against that, geography and skills are close to complete, which means the location analysis and the skill-gap work — the parts the product most depends on — rest on much firmer ground than the compensation analysis does.</p>
+</section>
+<section id="output" class="level2">
+<h2 class="anchored" data-anchor-id="output">Output</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead>
-<tr class="header">
-<th>Page</th>
-<th>What it provides</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
-<td><strong>Project Overview</strong></td>
-<td>Why the product question matters and anticipated findings</td>
+<td><strong>Analytical panel</strong></td>
+<td><strong><code>data/processed/career_market_panel.csv</code> — 7,074 rows, 57 columns</strong></td>
 </tr>
 <tr class="even">
-<td><strong>Data Preparation</strong></td>
-<td>Where the data comes from, how it was filtered and cleaned, and what its limitations are</td>
+<td>Data dictionary</td>
+<td><code>outputs/data_dictionary.md</code> and <code>outputs/data_dictionary.csv</code></td>
 </tr>
 <tr class="odd">
-<td><strong>Exploratory Analysis</strong></td>
-<td>Current market analysis: volume, pay, geography, experience, flexibility, employers</td>
+<td>Build log</td>
+<td><code>outputs/m3_panel_build_log.md</code></td>
 </tr>
 <tr class="even">
-<td><strong>Skill Gap Analysis</strong></td>
-<td>What employers ask for, measured against what the team can actually do for a realistic comparison</td>
+<td>Normalization log</td>
+<td><code>outputs/m3_normalization_log.md</code></td>
 </tr>
 <tr class="odd">
-<td><strong>Predictive Modeling</strong></td>
-<td>Whether the market splits into segments a candidate can target</td>
+<td>Employer cleanup log</td>
+<td><code>outputs/m5_employer_cleanup_log.md</code></td>
 </tr>
 <tr class="even">
-<td><strong>Career Strategy</strong></td>
-<td>Where to apply, what to learn next, how to position</td>
+<td>Baseline numbers</td>
+<td><code>outputs/m3_baseline_numbers.md</code></td>
 </tr>
 </tbody>
 </table>
-<p>Each analysis page states how many postings it is based on, because field coverage varies across the dataset.</p>
+<p>The source Parquet files are kept locally and excluded from version control; at roughly a gigabyte they are not needed to reproduce the analysis from the panel.</p>
 </section>
-<section id="team" class="level2">
-<h2 class="anchored" data-anchor-id="team">Team</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>GitHub</th>
-<th>Role in Modules 4 and 5</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Fuad Babaiev</td>
-<td><a href="https://github.com/fuadbbv">fuadbbv</a></td>
-<td>Data cleaning and employer normalisation; final analytics tracks; report assembly and publishing</td>
-</tr>
-<tr class="even">
-<td>Katie Bowles</td>
-<td><a href="https://github.com/kmbowles00">kmbowles00</a></td>
-<td>Market baseline and shared visual theme; final recommendations; site requirements check</td>
-</tr>
-<tr class="odd">
-<td>Jonathan Chen</td>
-<td><a href="https://github.com/jchenbu">jchenbu</a></td>
-<td>Skill gap analysis and chart rework; interpretation of the final analytics</td>
-</tr>
-</tbody>
-</table>
+<section id="reproducing-this-step" class="level2">
+<h2 class="anchored" data-anchor-id="reproducing-this-step">Reproducing This Step</h2>
+<ol type="1">
+<li>Download the Module 3 dataset into <code>data/raw/m3_dataset/</code></li>
+<li><code>pip install -r requirements.txt</code></li>
+<li><code>python notebooks/19_build_panel_wrds.py</code> — scope filter, role filter, cleaning</li>
+<li><code>python notebooks/21_fix_salary.py</code> — period-aware salary validation</li>
+<li><code>python notebooks/23_normalize_panel.py</code> — field normalization</li>
+<li><code>python notebooks/24_clean_employers.py</code> — employer cleanup</li>
+<li><code>python notebooks/22_data_dictionary_m3.py</code> — data dictionary</li>
+<li><code>python notebooks/15_market_baseline_figures.py</code> — baseline figures</li>
+</ol>
+<p>The scripts must run in that order: normalization depends on the salary step, and the dictionary and figures both read the normalized panel.</p>
+<p>All work runs on the course AWS EC2 environment.</p>
 </section>
-<section id="roadmap" class="level2">
-<h2 class="anchored" data-anchor-id="roadmap">Roadmap</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Module</th>
-<th>Deliverable</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>M1</td>
-<td>Project scope, industry selection, rationale, initial site</td>
-<td>Complete</td>
-</tr>
-<tr class="even">
-<td>M2</td>
-<td>Data preparation and market baseline</td>
-<td>Complete</td>
-</tr>
-<tr class="odd">
-<td>M3</td>
-<td>Site restructure, enhanced exploratory analysis, skill gap analysis</td>
-<td>Complete</td>
-</tr>
-<tr class="even">
-<td>M4</td>
-<td>Checkpoint — readiness review of Steps 1 to 3</td>
-<td>Complete</td>
-</tr>
-<tr class="odd">
-<td>M5</td>
-<td>Final analytics, recommendations, report</td>
-<td>In progress</td>
-</tr>
-<tr class="even">
-<td>M6</td>
-<td>Final presentation</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
 
 
 </section>
